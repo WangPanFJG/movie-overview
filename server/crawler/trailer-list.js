@@ -52,6 +52,7 @@ console.log('进来了');
     return links
   })
   brower.close()
-  console.log(result);
-  
+
+  process.send({result})
+  process.exit(0)
 })()
