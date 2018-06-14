@@ -1,5 +1,5 @@
 module.exports = {
-  html: require('./html'),
+  htmlTpl: require('./html'),
   ejsTpl: require('./ejs'),
-  pugTpl: require('./pug'),
+  pugTpl: require('./pug')
 }

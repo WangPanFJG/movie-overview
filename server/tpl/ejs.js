@@ -1,4 +1,3 @@
-
 module.exports = `
 <!DOCTYPE html>
 <html>
@@ -18,7 +17,7 @@ module.exports = `
           <p>This is <%= me %></p>
         </div>
         <div class="col-md-4">
-          <p>测试静态 HTML 页面</p>
+          <p>测试动态 EJS 模板引擎</p>
         </div>
       </div>
     </div>
