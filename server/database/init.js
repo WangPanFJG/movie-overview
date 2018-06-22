@@ -1,7 +1,15 @@
 const mongoose = require('mongoose')
 const db = 'mongodb://127.0.0.1:12345/douban-test'
+const glob = require('glob') // glob库，用于匹配符合匹配规则的文件
+const { resolve } = require('path')
 
 mongoose.Promise = global.Promise
+
+// 初始化所有数据库表
+exports.initSchemas = () => {
+  glob.sync(resolve(__dirname, './schema', '**/*.js')).forEach(require)
+  // 同步获取schema文件夹下的所有js文件（嵌套的js文件也拿得到）, require 逐个加载进来
+}
 
 exports.connect = () => {
   let maxConnectTimes = 0

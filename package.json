@@ -22,7 +22,9 @@
   },
   "homepage": "https://github.com/WangPanFJG/movie-overview#readme",
   "dependencies": {
+    "bcrypt": "^2.0.1",
     "ejs": "^2.6.1",
+    "glob": "^7.1.2",
     "koa": "^2.5.1",
     "koa-static": "^4.0.3",
     "koa-views": "^6.1.4",

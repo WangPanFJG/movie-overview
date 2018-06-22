@@ -1,10 +1,18 @@
 const Koa = require('koa')
 const views = require('koa-views')
 const { resolve } = require('path')
-const { connect } = require('./database/init')
+const { connect, initSchemas } = require('./database/init')
+const mongoose = require('mongoose')
 
 ;(async () => {
   await connect()
+
+  initSchemas() // 初始化Schemas
+
+  // 测试一下是否创建成功
+  const Movie = mongoose.model('Movie')
+  const movies = await Movie.find({})
+  console.log('movies', movies)
 })()
 
 const app = new Koa()
