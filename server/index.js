@@ -10,9 +10,12 @@ const mongoose = require('mongoose')
   initSchemas() // 初始化Schemas
 
   // 测试一下是否创建成功
-  const Movie = mongoose.model('Movie')
-  const movies = await Movie.find({})
-  console.log('movies', movies)
+  // const Movie = mongoose.model('Movie')
+  // const movies = await Movie.find({})
+  // console.log('movies', movies)
+
+  // require('./tasks/movie') // require  movie.js, 同时就会执行
+  require('./tasks/api')
 })()
 
 const app = new Koa()
