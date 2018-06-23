@@ -11,6 +11,24 @@ exports.initSchemas = () => {
   // 同步获取schema文件夹下的所有js文件（嵌套的js文件也拿得到）, require 逐个加载进来
 }
 
+// 创建管理员
+exports.initAdmin = async () => {
+  const User = mongoose.model('User')
+  let user = await User.findOne({
+    username: 'Scott'
+  })
+
+  if (!user) {
+    const user = new User({
+      username: 'Main',
+      email: '375277023@qq.com',
+      password: '123456'
+    })
+
+    await user.save()
+  }
+}
+
 exports.connect = () => {
   let maxConnectTimes = 0
 

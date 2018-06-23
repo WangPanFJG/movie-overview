@@ -1,7 +1,7 @@
 const Koa = require('koa')
 const views = require('koa-views')
 const { resolve } = require('path')
-const { connect, initSchemas } = require('./database/init')
+const { connect, initSchemas, initAdmin  } = require('./database/init')
 const mongoose = require('mongoose')
 
 ;(async () => {
@@ -9,13 +9,17 @@ const mongoose = require('mongoose')
 
   initSchemas() // 初始化Schemas
 
+  await initAdmin() // 创建新用户
+
   // 测试一下是否创建成功
   // const Movie = mongoose.model('Movie')
   // const movies = await Movie.find({})
   // console.log('movies', movies)
 
   // require('./tasks/movie') // require  movie.js, 同时就会执行
-  require('./tasks/api')
+  // require('./tasks/api')
+  // require('./tasks/trailer')
+  // require('./tasks/qiniu')
 })()
 
 const app = new Koa()

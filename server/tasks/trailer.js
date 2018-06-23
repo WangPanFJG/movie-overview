@@ -1,7 +1,17 @@
 const cp = require('child_process') // node的子线程模块，不用安装
 const { resolve } = require('path')
+const mongoose = require('mongoose')
+const Movie = mongoose.model('Movie')
+const Category = mongoose.model('Category')
 
 ;(async () => {
+  let movies = await Movie.find({ // 获取movies
+    $or: [
+      { video: { $exists: false }},
+      { video: null }
+    ]
+  })
+
   const script = resolve(__dirname, '../crawler/video')
   const child = cp.fork(script, []) // 生成子线程
   let invoked = false
@@ -23,7 +33,41 @@ const { resolve } = require('path')
     console.log(err)
   })
 
-  child.on('message', data => {
-    console.log(data) // 拿到./crawler/video的process.send(data)
+  child.on('message', async data => { // 拿到./crawler/video的process.send(data)
+    // console.log(data) 
+    let doubanId = data.doubanId
+    let movie = await Movie.findOne({ // 查询此条movie
+      doubanId: doubanId
+    })
+
+    if (data.video) {
+      movie.video = data.video
+      movie.cover = data.cover
+
+      await movie.save()
+    } else {
+      await movie.remove()
+
+      let movieTypes = movie.movieTypes
+
+      for (let i = 0; i < movieTypes.length; i++) {
+        let type = movieTypes[i]
+        let cat = Category.findOne({
+          name: type
+        })
+
+        if (cat && cat.movies) {
+          let idx = cat.movies.indexOf(movie._id)
+
+          if (idx > -1) {
+            cat.movies = cat.movies.splice(idx, 1)
+          }
+
+          await cat.save()
+        }
+      }
+    }
   })
+
+  child.send(movies) // 利用子进程把movies发送出去到video.js
 })()
